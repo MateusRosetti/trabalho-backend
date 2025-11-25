@@ -1,0 +1,212 @@
+openapi: "3.0.0"
+
+info:
+  title: "ToDo API"
+  description: "API REST para gerenciamento de tarefas com autenticação JWT."
+  version: "1.0.0"
+
+servers:
+  - url: http://localhost:3000/api/v1
+    description: Ambiente local de desenvolvimento
+
+tags:
+  - name: Autenticação
+    description: Rotas de login e obtenção de token JWT
+  - name: Tarefas
+    description: CRUD de tarefas (protegido por JWT)
+
+paths:
+
+  /auth/login:
+    post:
+      tags:
+        - Autenticação
+      summary: Realiza login e retorna um token JWT
+      requestBody:
+        description: Credenciais de login
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - senha
+              properties:
+                email:
+                  type: string
+                  example: mateus@example.com
+                senha:
+                  type: string
+                  example: minhasenha
+      responses:
+        "200":
+          description: Login bem-sucedido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: Token JWT para acesso às rotas protegidas
+        "401":
+          description: Credenciais inválidas
+
+
+  /tarefas:
+    get:
+      tags:
+        - Tarefas
+      summary: Lista todas as tarefas
+      responses:
+        "200":
+          description: Lista de tarefas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Tarefa"
+
+    post:
+      tags:
+        - Tarefas
+      summary: Cria uma nova tarefa (JWT obrigatório)
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TarefaCreate"
+      responses:
+        "201":
+          description: Tarefa criada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tarefa"
+        "400":
+          description: Dados inválidos
+        "401":
+          description: Token ausente ou inválido
+
+
+  /tarefas/{id}:
+    get:
+      tags:
+        - Tarefas
+      summary: Obtém uma tarefa pelo ID
+      parameters:
+        - $ref: "#/components/parameters/TarefaId"
+      responses:
+        "200":
+          description: Tarefa encontrada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tarefa"
+        "404":
+          description: Tarefa não encontrada
+
+    put:
+      tags:
+        - Tarefas
+      summary: Atualiza uma tarefa (JWT obrigatório)
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/TarefaId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TarefaUpdate"
+      responses:
+        "200":
+          description: Tarefa atualizada
+        "400":
+          description: Dados inválidos
+        "404":
+          description: Tarefa não encontrada
+        "401":
+          description: Token inválido
+
+    delete:
+      tags:
+        - Tarefas
+      summary: Exclui uma tarefa (JWT obrigatório)
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/TarefaId"
+      responses:
+        "204":
+          description: Tarefa excluída
+        "404":
+          description: Tarefa não encontrada
+        "401":
+          description: Token inválido
+
+
+components:
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    TarefaId:
+      name: id
+      in: path
+      required: true
+      description: ID da tarefa
+      schema:
+        type: string
+        example: 675adbd3665370c123456789
+
+  schemas:
+
+    Tarefa:
+      type: object
+      properties:
+        _id:
+          type: string
+        titulo:
+          type: string
+          example: Estudar Node.js
+        descricao:
+          type: string
+          example: Finalizar o CRUD
+        concluida:
+          type: boolean
+          example: false
+      required:
+        - titulo
+
+    TarefaCreate:
+      type: object
+      properties:
+        titulo:
+          type: string
+          example: Fazer trabalho da faculdade
+        descricao:
+          type: string
+          example: Criar API com Node.js
+      required:
+        - titulo
+
+    TarefaUpdate:
+      type: object
+      properties:
+        titulo:
+          type: string
+        descricao:
+          type: string
+        concluida:
+          type: boolean
