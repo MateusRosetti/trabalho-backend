@@ -1,89 +1,128 @@
-# trabalho-backend 
+#  API RESTful de Gerenciamento de Tarefas  
+Trabalho desenvolvido para a disciplina de Construção de Backend.
 
-* integgrantes do grupo :
--Mateus Rosetti Da Rocha Ribeiro (2314290085)
 
-* Divisão de Tarefas
+##  Integrantes do Grupo
+- **Mateus Rosetti Da Rocha Ribeiro** (2314290085)
 
-Modelagem do banco:Mateus Rosetti
-Desenvolvimento das rotas:Mateus Rosetti
-Autenticação JWT:Mateus Rosetti
-Testes:Mateus Rosetti
-Swagger:Mateus Rosetti
-README e organização do repositório:Mateus Rosetti
 
-* uma API completa de gerenciamento de tarefas,foi utilizado o node.js,express,mongoDB e JWT . foi colocado tambem CRUD completo,testes,documentaçao swagger e boas praticas REST.
+##  Divisão das Tarefas do Projeto
+- **Modelagem do Banco de Dados:** Mateus Rosetti  
+- **Desenvolvimento das Rotas:** Mateus Rosetti  
+- **Autenticação JWT:** Mateus Rosetti  
+- **Testes Automatizados:** Mateus Rosetti  
+- **Documentação Swagger:** Mateus Rosetti  
+- **README e Organização do Repositório:** Mateus Rosetti  
 
-* Tecnologias Utilizadas:
 
-Node.js
-Express
-MongoDB + Mongoose
-JWT (JSON Web Token)
-Nodemon
-Swagger (OpenAPI 3.0)
-Postman / REST Client
-Bcrypt
 
-* A estrutura do projeto foi basicamente dividida assim: 
+##  Descrição Geral do Projeto
+Foi desenvolvida uma **API completa de gerenciamento de tarefas** utilizando:
+
+- Node.js  
+- Express  
+- MongoDB + Mongoose  
+- JWT (JSON Web Token)  
+- CRUD completo de tarefas  
+- Testes com Jest e Supertest  
+- Documentação Swagger (OpenAPI 3.0)  
+- Boas práticas REST  
+- Validações e regras de negócio
+
+
+##  Tecnologias Utilizadas
+- **Node.js**
+- **Express**
+- **MongoDB / Mongoose**
+- **JWT – JSON Web Token**
+- **Bcrypt.js**
+- **Nodemon**
+- **Swagger (OpenAPI)**
+- **Jest + Supertest**
+- **Postman / Thunder Client**
+
+
+
+## Estrutura do Projeto
+
 /src
-  /controllers
-    tarefasController.js
-    authController.js
-  /models
-    tarefaModel.js
-    usuarioModel.js
-  /routes
-    tarefasRouter.js
-    authRouter.js
-  /middlewares
-    authMiddleware.js
+/controllers
+authController.js
+tarefasController.js
+/models
+userModel.js
+tarefasModel.js
+/routes
+authRouter.js
+tarefasRouter.js
+/middlewares
+authMiddleware.js
+
 swagger.yaml
+app.js
 server.js
 package.json
 README.md
 
-* para ser feito a instalacao e execucao do projeto precisa ser feito esse passo a passo :
 
-  1:clonar o repositorio
-  git clone https://github.com/MateusRosetti/trabalho-backend.git
-  cd trabalho-backend-trabalho-final
-  npm install
 
-  e um .env com o seguinte codigo :
+#  Como Executar o Projeto
 
-MONGO_URI=mongodb://localhost:27017/todo
-JWT_SECRET=segredo123
+## 1 Clonar o repositório
+
+git clone https://github.com/MateusRosetti/trabalho-backend.git
+cd trabalho-backend
+npm install
+
+Criar o arquivo .env (OBRIGATÓRIO)
+
 PORT=3000
+MONGO_URL=mongodb://localhost:27017/trabalho_final
+JWT_SECRET=senha12345
+JWT_EXPIRES_IN=5d
 
-e rodar o servidor (npm run dev)
+Há também um arquivo .env.example com o modelo de referência.
+
+3 Rodar o servidor
+npm run dev
+
+O servidor iniciará em:
+
+http://localhost:3000
+
+Autenticação (JWT)
+
+As rotas de escrita (POST, PUT, DELETE) são protegidas por JWT.
+
+Para gerar token, use a rota:
+
+ Login:
+POST /api/v1/auth/login
+{
+  "email": "seuemail@example.com",
+  "senha": "suasenha"
+}
+
+O token deve ser enviado no header:
+
+Authorization: Bearer seu_token_aqui
 
 
-* foi feito tambem o processo de autenticacao para acassar rotas de escrita (POST,PUT,DELETE). o token é gerado pela rota POST /api/v1/auth/login
-
-* a documentacao da api esta no arquivo swager que esta no arquivo chamado swagger.yaml
-
-* Endpoints Principais
- 
- Criar tarefa:
-
+Principais Endpoints
+Criar tarefa (protegido)
 POST /api/v1/tarefas
 
- Listar todas:
-
+Listar todas as tarefas
 GET /api/v1/tarefas
 
- Buscar por ID:
+Buscar tarefa por ID
+GET /api/v1/tarefas/:id
 
-GET /api/v1/tarefas/{id}
+Atualizar tarefa (protegido)
+PUT /api/v1/tarefas/:id
 
- Atualizar:
-
-PUT /api/v1/tarefas/{id}
-
- Excluir:
-
-DELETE /api/v1/tarefas/{id}
+Deletar tarefa (protegido)
+DELETE /api/v1/tarefas/:id
 
 
 
