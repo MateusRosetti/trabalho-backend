@@ -1,4 +1,4 @@
-// models/tarefasModel.js
+
 const mongoose = require('mongoose');
 
 const tarefaSchema = new mongoose.Schema({

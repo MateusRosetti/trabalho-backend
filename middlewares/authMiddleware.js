@@ -1,4 +1,4 @@
-// middlewares/authMiddleware.js
+
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
@@ -13,7 +13,7 @@ module.exports = (req, res, next) => {
 
   try {
     const payload = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = payload; // id, email, nome
+    req.user = payload; 
     return next();
   } catch (err) {
     return res.status(401).json({ erro: 'Token inválido ou expirado' });

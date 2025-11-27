@@ -1,10 +1,10 @@
-// routes/authRouter.js
+
 const express = require('express');
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
 const authController = require('../controllers/authController');
 
-// registro
+
 router.post('/register', [
   body('nome').isString().isLength({ min: 3 }).withMessage('Nome com ao menos 3 caracteres'),
   body('email').isEmail().withMessage('Email inválido'),
@@ -15,7 +15,7 @@ router.post('/register', [
   return authController.register(req, res);
 });
 
-// login
+
 router.post('/login', [
   body('email').isEmail().withMessage('Email inválido'),
   body('senha').exists().withMessage('Senha obrigatória')
